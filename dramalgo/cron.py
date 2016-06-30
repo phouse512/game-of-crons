@@ -7,9 +7,9 @@ class Cron:
         self.x = x
         self.y = y
 
-    """
-    set a new position for a cron instance
-    """
     def set_position(self, x: int, y: int) -> None:
+        """
+        set a new position for a cron instance
+        """
         self.x = x
         self.y = y

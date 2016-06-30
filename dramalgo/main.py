@@ -7,7 +7,7 @@ class Dramalgo:
         print("starting now")
 
         self.world = World()
-        self.world.console_output()
+        self.world.seed_world()
         self.run()
 
     def run(self) -> None:
