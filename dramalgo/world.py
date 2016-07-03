@@ -4,7 +4,9 @@ from dramalgo.cron import Cron
 from dramalgo.enums import Energy
 from dramalgo.enums import Status
 from dramalgo.space import Space
+from typing import Any
 from typing import Callable
+from typing import Dict
 from typing import Tuple
 
 
@@ -112,11 +114,33 @@ class World:
         food_range = random.choice([x * .01 for x in range(5, 15)])  # type: float
         random_food = int(food_range * self.width * self.height)  # type: int
 
+        # iterate over random food, the number of food spots to place and randomly select
+        #   an open position for each piece of energy
         for i in range(random_food):
             position = random.randint(0, len(open_spaces)-1)  # type: int
             x_ind, y_ind = open_spaces[position][0], open_spaces[position][1]
             self.world[y_ind][x_ind].energy = Energy.select_random()
             open_spaces.pop(position)
+
+    def tick(self) -> Dict[Any, Any]:
+        """
+        advance the world by 1 day - call the necessary code on each cron, replenish
+          energy stores, etc
+        :return: a dict of the diff between map renders
+        """
+        self.consume_food()
+
+        # TODO: foreach cron, fetch food from that space
+
+    def consume_food(self) -> None:
+        """
+        attempt to feed all circles based on whatever spaces they inhabit - loop
+          through self.cells
+        """
+
+        for key, value in self.cells.items():
+            space = self.world[value.y][value.x]
+            print(space.energy)
 
     def reset_world(self) -> None:
         """

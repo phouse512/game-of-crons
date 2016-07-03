@@ -9,6 +9,7 @@ class Dramalgo:
         self.world = World()
         self.world.seed_world()
         self.run()
+        self.world.tick()
 
     def run(self) -> None:
         print("actually running")

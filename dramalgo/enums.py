@@ -19,4 +19,4 @@ class Energy(enum.Enum):
     @staticmethod
     def select_random():
         energy_list = [x for x in Energy]
-        return random.choice(energy_list)
+        return random.choice(energy_list).value
