@@ -2,32 +2,59 @@ var $ = require('jquery');
 var request = require('request');
 var THREE = require('three');
 
+var container;
+var camera, scene, renderer;
+
+function init() {
+    camera = new THREE.OrthographicCamera(window.innerWidth/ -2, window.innerWidth/2, 
+                                          window.innerHeight/2, window.innerHeight/-2, -500, 1000);
+
+    camera.position.x = 200;
+    camera.position.y = 100;
+    camera.position.z = 200;
+
+    scene = new THREE.Scene();
+
+    displayGrid(500, 50);
+
+    var ambientLight = new THREE.AmbientLight(Math.random() * 0x10);
+    scene.add(ambientLight);
+
+
+
+    renderer = new THREE.WebGLRenderer();
+    renderer.setClearColor(0xf0f0f0);
+ //   renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+}
+
+function displayGrid(size, step) {
+    var geometry = new THREE.Geometry();
+
+    for (var i = -size; i <= size; i += step) {
+        geometry.vertices.push(new THREE.Vector3(-size, 0, i));
+        geometry.vertices.push(new THREE.Vector3(size, 0, i));
+
+        geometry.vertices.push(new THREE.Vector3(i, 0, -size));
+        geometry.vertices.push(new THREE.Vector3(i, 0, size));
+    }
+
+    var material = new THREE.LineBasicMaterial( { color: 0x000000, opacity: 0.2 });
+    var line = new THREE.LineSegments(geometry, material);
+
+    scene.add(line);
+}
 
 function appStart() {
     console.log('yoza');
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-
-    renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
-
-    var geometry = new THREE.BoxGeometry(1, 1, 1);
-    material = new THREE.MeshBasicMaterial( { color: 0x00ff00 });
-    cube = new THREE.Mesh(geometry, material);
-
-    scene.add(cube);
-
-    camera.position.z = 5;
-
+    init();
     render();
 }
 
 function render() {
-
-    cube.rotation.x += 0.1;
-    cube.rotation.y += 0.1;
     requestAnimationFrame(render);
+    camera.lookAt(scene.position);
     renderer.render(scene, camera);
 }
 
