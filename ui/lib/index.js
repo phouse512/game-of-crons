@@ -27,6 +27,16 @@ function init() {
  //   renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
+//
+//    for (var i =0; i < 16; i++) {
+//        displaySquare(randomSpot(-20, 20), randomSpot(-20,20), 50, .5);
+//    }
+
+    displaySquare(-11, 19, 50, .5);
+}
+
+function randomSpot(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 function displayGrid(size, step) {
@@ -44,6 +54,20 @@ function displayGrid(size, step) {
     var line = new THREE.LineSegments(geometry, material);
 
     scene.add(line);
+}
+
+function displaySquare(x, y, size, opacity) {
+    var boxGeometry = new THREE.BoxGeometry(size, 1, size);
+    boxGeometry.translate(25 * x, 0, 25 * y);
+    var material = new THREE.MeshBasicMaterial({
+        color: 0x003366
+    });
+    material.opacity = opacity;
+    material.transparent = true;
+    var cube = new THREE.Mesh(boxGeometry, material);
+
+
+    scene.add(cube);
 }
 
 function appStart() {
